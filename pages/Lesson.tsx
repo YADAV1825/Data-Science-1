@@ -138,7 +138,7 @@ const Lesson: React.FC<{ theme: ThemeMode }> = ({ theme }) => {
               <span>Interactive_Kernel.ipynb</span>
             </div>
             <a 
-              href="https://jupyter.org/try-jupyter/lab//" 
+              href="https://jupyter.org/try-jupyter/lab/" 
               target="_blank" 
               className="text-[10px] text-[#58a6ff] hover:underline flex items-center gap-1 font-mono group"
             >
@@ -147,7 +147,7 @@ const Lesson: React.FC<{ theme: ThemeMode }> = ({ theme }) => {
           </div>
           <div className="flex-1 relative group">
             <iframe
-              src="https://jupyter.org/try-jupyter/lab//"
+              src="https://jupyter.org/try-jupyter/lab/"
               className="absolute inset-0 w-full h-full border-none"
               title="Jupyter IDE"
               loading="lazy"
