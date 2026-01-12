@@ -1,0 +1,5 @@
+{
+  "name": "PyData Academy - VS Code Style Learner",
+  "description": "An aesthetic, VS Code-themed learning platform for Python and Data Science featuring integrated video tutorials and an embedded Jupyter notebook IDE.",
+  "requestFramePermissions": []
+}

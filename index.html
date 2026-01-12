@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyData Academy - Learn Python & Data Science</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --accent: #a78bfa;
+            --bg-dark: #0f172a;
+            --bg-light: #f8fafc;
+            --card-dark: #1e293b;
+            --card-light: #ffffff;
+            --text-dark: #e2e8f0;
+            --text-light: #0f172a;
+            --text-muted-dark: #94a3b8;
+            --text-muted-light: #64748b;
+            --border-dark: #334155;
+            --border-light: #e2e8f0;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        html.light-mode {
+            --bg: var(--bg-light);
+            --card: var(--card-light);
+            --text: var(--text-light);
+            --text-muted: var(--text-muted-light);
+            --border: var(--border-light);
+        }
+
+        html.dark-mode {
+            --bg: var(--bg-dark);
+            --card: var(--card-dark);
+            --text: var(--text-dark);
+            --text-muted: var(--text-muted-dark);
+            --border: var(--border-dark);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto Mono', 'Courier New', monospace;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Header */
+        header {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: background 0.3s;
+        }
+
+        html.light-mode header {
+            background: rgba(248, 250, 252, 0.9);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--primary);
+        }
+
+        .logo svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            color: var(--text);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .back-btn {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: none;
+        }
+
+        .back-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .back-btn.visible {
+            display: block;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Home Section */
+        .home-section {
+            display: block;
+        }
+
+        .home-section.hidden {
+            display: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(167, 139, 250, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Roadmap Section */
+        .roadmap {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 4rem;
+            box-shadow: var(--shadow);
+        }
+
+        .roadmap h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .roadmap-intro {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .roadmap-tracks {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .track {
+            background: rgba(14, 165, 233, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .track-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .track-desc {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        /* Courses Grid */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .course-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .course-thumbnail {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: var(--border);
+        }
+
+        .course-body {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-badge {
+            display: inline-block;
+            background: rgba(14, 165, 233, 0.2);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            width: fit-content;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .course-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .course-description {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            flex: 1;
+            line-height: 1.5;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .course-duration {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .btn-start {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .btn-start:hover {
+            background: var(--primary-dark);
+            transform: translateX(4px);
+        }
+
+        /* Learning Workspace */
+        .workspace-section {
+            display: none;
+        }
+
+        .workspace-section.visible {
+            display: block;
+        }
+
+        .workspace-header {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .workspace-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .workspace-meta {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .workspace-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-top: 1rem;
+        }
+
+        .workspace-controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .control-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Layout Container */
+        .layout-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .layout-container.vertical {
+            grid-template-columns: 1fr;
+        }
+
+        .video-panel,
+        .notebook-panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .panel-header {
+            background: rgba(14, 165, 233, 0.1);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .notebook-container {
+            height: 600px;
+            overflow: hidden;
+        }
+
+        .notebook-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .layout-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .roadmap-tracks {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .hero {
+                padding: 2rem 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .roadmap {
+                padding: 1.5rem;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .notebook-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <html class="dark-mode">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C6.5 6.253 2 10.753 2 16.5S6.5 26.747 12 26.747s10-4.5 10-10.247S17.5 6.253 12 6.253z"></path>
+                    </svg>
+                    PyData Academy
+                </div>
+                <div class="header-actions">
+                    <button class="back-btn" onclick="goHome()">← Back to Courses</button>
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">🌙</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <!-- Home Section -->
+            <section class="home-section" id="homeSection">
+                <div class="hero">
+                    <div class="hero-content">
+                        <div class="hero-badge">✨ Learn Python & Data Science</div>
+                        <h1>Learn Python & Data Science Free — Watch and Code Together</h1>
+                        <p>Master data science with curated YouTube playlists and hands-on JupyterLite notebooks. No login required.</p>
+                    </div>
+                </div>
+
+                <div class="roadmap">
+                    <h2>🗺️ Your Learning Roadmap</h2>
+                    <p class="roadmap-intro">We've structured your learning into two major phases. Begin with Hindi for deep foundations, then scale with English advanced tracks.</p>
+                    
+                    <div class="roadmap-tracks">
+                        <!-- Hindi Track -->
+                        <div class="track">
+                            <div class="track-title">
+                                <span>🇮🇳</span>
+                                Foundation (Hindi)
+                            </div>
+                            <p class="track-desc">Python Basics, SQL, Data Analytics Essentials</p>
+                            <div class="courses-grid">
+                                <div class="course-card" onclick="startLearning('hindi-beginner-1')">
+                                    <img src="https://img.youtube.com/vi/VaSjiJMrq24/maxresdefault.jpg" alt="Data Analytics Full Course" class="course-thumbnail">
+                                    <div class="course-body">
+                                        <span class="course-badge">Hindi</span>
+                                        <h3 class="course-title">Data Analytics Full Course - Beginner to Pro</h3>
+                                        <p class="course-description">Master Data Analytics from scratch. Covers Python, Excel, SQL, and PowerBI.</p>
+                                        <div class="course-meta">
+                                            <span class="course-duration">⏱️ 29 Hours</span>
+                                            <button class="btn-start" onclick="event.stopPropagation(); startLearning('hindi-beginner-1')">Start</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- English Track -->
+                        <div class="track">
+                            <div class="track-title">
+                                <span>🌐</span>
+                                Advanced Track (English)
+                            </div>
+                            <p class="track-desc">Pandas, Numpy, Machine Learning, Projects</p>
+                            <div class="courses-grid">
+                                <div class="course-card" onclick="startLearning('english-advanced-1')">
+                                    <img src="https://img.youtube.com/vi/CMEWVn1uZpQ/maxresdefault.jpg" alt="Python for Data Science" class="course-thumbnail">
+                                    <div class="course-body">
+                                        <span class="course-badge">English</span>
+                                        <h3 class="course-title">Python for Data Science – Full Course</h3>
+                                        <p class="course-description">Comprehensive Python tutorial tailored for Data Science workflows.</p>
+                                        <div class="course-meta">
+                                            <span class="course-duration">⏱️ 18 Hours</span>
+                                            <button class="btn-start" onclick="event.stopPropagation(); startLearning('english-advanced-1')">Start</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="course-card" onclick="startLearning('english-advanced-2')">
+                                    <img src="https://img.youtube.com/vi/LHBE6Q9XlzI/maxresdefault.jpg" alt="Pandas, NumPy, Matplotlib" class="course-thumbnail">
+                                    <div class="course-body">
+                                        <span class="course-badge">English</span>
+                                        <h3 class="course-title">Python for DS (Pandas, NumPy, Matplotlib)</h3>
+                                        <p class="course-description">Deep dive into essential libraries powering modern data science.</p>
+                                        <div class="course-meta">
+                                            <span class="course-duration">⏱️ 13 Hours</span>
+                                            <button class="btn-start" onclick="event.stopPropagation(); startLearning('english-advanced-2')">Start</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="course-card" onclick="startLearning('english-advanced-3')">
+                                    <img src="https://img.youtube.com/vi/ua-CiDNNj30/maxresdefault.jpg" alt="Data Science Full Course" class="course-thumbnail">
+                                    <div class="course-body">
+                                        <span class="course-badge">English</span>
+                                        <h3 class="course-title">Learn Data Science - Full Course for Beginners</h3>
+                                        <p class="course-description">Transition from Python basics to foundational Data Science concepts.</p>
+                                        <div class="course-meta">
+                                            <span class="course-duration">⏱️ 6 Hours</span>
+                                            <button class="btn-start" onclick="event.stopPropagation(); startLearning('english-advanced-3')">Start</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="course-card" onclick="startLearning('english-advanced-4')">
+                                    <img src="https://img.youtube.com/vi/XU5pw3QRYjQ/maxresdefault.jpg" alt="Data Science Revision" class="course-thumbnail">
+                                    <div class="course-body">
+                                        <span class="course-badge">English</span>
+                                        <h3 class="course-title">Data Science Hands-On Crash Course</h3>
+                                        <p class="course-description">Revision and hands-on project based crash course for final readiness.</p>
+                                        <div class="course-meta">
+                                            <span class="course-duration">⏱️ 3 Hours</span>
+                                            <button class="btn-start" onclick="event.stopPropagation(); startLearning('english-advanced-4')">Start</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Learning Workspace Section -->
+            <section class="workspace-section" id="workspaceSection">
+                <div class="workspace-header">
+                    <h2 class="workspace-title" id="workspaceTitle"></h2>
+                    <div class="workspace-meta">
+                        <div class="meta-item">📖 <span id="workspaceLanguage"></span></div>
+                        <div class="meta-item">⏱️ <span id="workspaceDuration"></span></div>
+                    </div>
+                    <p class="workspace-description" id="workspaceDescription"></p>
+                    
+                    <div class="workspace-controls">
+                        <button class="control-btn" id="splitBtn" onclick="setLayout('split')">
+                            <span>⬅️➡️</span> Side by Side
+                        </button>
+                        <button class="control-btn" id="verticalBtn" onclick="setLayout('vertical')">
+                            <span>⬆️⬇️</span> Vertical
+                        </button>
+                    </div>
+                </div>
+
+                <div class="layout-container" id="layoutContainer">
+                    <div class="video-panel">
+                        <div class="panel-header">▶️ Video Player</div>
+                        <div class="video-container">
+                            <iframe id="videoPlayer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <div class="notebook-panel">
+                        <div class="panel-header">📓 JupyterLite Notebook</div>
+                        <div class="notebook-container">
+                            <iframe src="https://jupyter.org/try-jupyter/lab/" allow="camera; microphone"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </html>
+
+    <script>
+        const courses = {
+            'hindi-beginner-1': {
+                title: 'Data Analytics Full Course - Beginner to Pro',
+                youtubeId: 'VaSjiJMrq24',
+                description: 'Master Data Analytics from scratch in Hindi. Covers Python, Excel, SQL, and PowerBI with hands-on projects.',
+                duration: '29 Hours',
+                language: 'Hindi'
+            },
+            'english-advanced-1': {
+                title: 'Python for Data Science – Full Course',
+                youtubeId: 'CMEWVn1uZpQ',
+                description: 'Comprehensive Python tutorial specifically tailored for Data Science workflows. Learn essential concepts and practices.',
+                duration: '18 Hours',
+                language: 'English'
+            },
+            'english-advanced-2': {
+                title: 'Python for DS (Pandas, NumPy, Matplotlib)',
+                youtubeId: 'LHBE6Q9XlzI',
+                description: 'Deep dive into the essential libraries that power modern data science: Pandas for data manipulation, NumPy for numerical computing, and Matplotlib for visualization.',
+                duration: '13 Hours',
+                language: 'English'
+            },
+            'english-advanced-3': {
+                title: 'Learn Data Science - Full Course for Beginners',
+                youtubeId: 'ua-CiDNNj30',
+                description: 'Transition from Python basics to foundational Data Science concepts. Perfect bridge course for aspiring data scientists.',
+                duration: '6 Hours',
+                language: 'English'
+            },
+            'english-advanced-4': {
+                title: 'Data Science Hands-On Crash Course',
+                youtubeId: 'XU5pw3QRYjQ',
+                description: 'Revision and hands-on project based crash course for final readiness. Solidify your data science skills with real-world projects.',
+                duration: '3 Hours',
+                language: 'English'
+            }
+        };
+
+        let currentLayout = 'split';
+
+        function toggleTheme() {
+            const html = document.querySelector('html');
+            if (html.classList.contains('dark-mode')) {
+                html.classList.remove('dark-mode');
+                html.classList.add('light-mode');
+                document.querySelector('.theme-toggle').textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.remove('light-mode');
+                html.classList.add('dark-mode');
+                document.querySelector('.theme-toggle').textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        function startLearning(courseId) {
+            const course = courses[courseId];
+            if (!course) return;
+
+            document.getElementById('homeSection').classList.add('hidden');
+            document.getElementById('workspaceSection').classList.add('visible');
+            document.querySelector('.back-btn').classList.add('visible');
+
+            document.getElementById('workspaceTitle').textContent = course.title;
+            document.getElementById('workspaceLanguage').textContent = course.language;
+            document.getElementById('workspaceDuration').textContent = course.duration;
+            document.getElementById('workspaceDescription').textContent = course.description;
+            document.getElementById('videoPlayer').src = `https://www.youtube.com/embed/${course.youtubeId}?autoplay=1&modestbranding=1`;
+
+            setLayout('split');
+            window.scrollTo(0, 0);
+        }
+
+        function goHome() {
+            document.getElementById('homeSection').classList.remove('hidden');
+            document.getElementById('workspaceSection').classList.remove('visible');
+            document.querySelector('.back-btn').classList.remove('visible');
+            document.getElementById('videoPlayer').src = '';
+            window.scrollTo(0, 0);
+        }
+
+        function setLayout(layout) {
+            currentLayout = layout;
+            const container = document.getElementById('layoutContainer');
+            const splitBtn = document.getElementById('splitBtn');
+            const verticalBtn = document.getElementById('verticalBtn');
+
+            if (layout === 'split') {
+                container.classList.remove('vertical');
+                splitBtn.classList.add('active');
+                verticalBtn.classList.remove('active');
+            } else {
+                container.classList.add('vertical');
+                verticalBtn.classList.add('active');
+                splitBtn.classList.remove('active');
+            }
+        }
+
+        // Initialize theme from localStorage
+        window.addEventListener('load', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            const html = document.querySelector('html');
+            
+            if (savedTheme === 'light') {
+                html.classList.remove('dark-mode');
+                html.classList.add('light-mode');
+                document.querySelector('.theme-toggle').textContent = '☀️';
+            }
+
+            setLayout('split');
+        });
+    </script>
+</body>
+</html>
